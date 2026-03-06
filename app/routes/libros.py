@@ -30,3 +30,16 @@ def eliminar(id):
     db.session.delete(libro)
     db.session.commit()
     return redirect(url_for('libros.listar'))
+
+@libros_bp.route('/editar/<int:id>', methods=['GET', 'POST'])
+def editar(id):
+    libro = Libro.query.get_or_404(id)
+    if request.method == 'POST':
+        libro.titulo = request.form['titulo']
+        libro.autor = request.form['autor']
+        libro.editorial = request.form['editorial']
+        libro.anio_publicacion = request.form['anio_publicacion']
+        libro.cantidad_ejemplares = request.form['cantidad_ejemplares']
+        db.session.commit()
+        return redirect(url_for('libros.listar'))
+    return render_template('libros/editar.html', libro=libro)

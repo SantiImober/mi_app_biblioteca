@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DER - Sistema de Gestión de Biblioteca</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f8f6f1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 2rem;
+        }
+
+        h1 {
+            font-family: Georgia, serif;
+            color: #1c1c1c;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: nowrap;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .entity {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            min-width: 220px;
+            border-top: 4px solid #b8975a;
+        }
+
+        .entity-header {
+            background: #1c1c1c;
+            color: #b8975a;
+            text-align: center;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .entity-fields {
+            padding: 0;
+        }
+
+        .field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid #f0ebe0;
+            font-size: 0.88rem;
+        }
+
+        .field:last-child { border-bottom: none; }
+
+        .field-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #333;
+            font-family: 'Courier New', monospace;
+        }
+
+        .field-type {
+            color: #888;
+            font-size: 0.78rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .badge {
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 0.1rem 0.4rem;
+            border-radius: 2px;
+            font-family: sans-serif;
+        }
+
+        .pk { background: #b8975a; color: white; }
+        .fk { background: #1c1c1c; color: #b8975a; }
+        .null { background: #e8e8e8; color: #666; }
+
+        .connector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 1.5rem;
+            position: relative;
+        }
+
+        .connector-line {
+            width: 80px;
+            height: 2px;
+            background: #b8975a;
+            position: relative;
+        }
+
+        .connector-line::before,
+        .connector-line::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            width: 2px;
+            height: 10px;
+            background: #b8975a;
+        }
+
+        .connector-line::before { left: 0; }
+        .connector-line::after { right: 0; }
+
+        .connector-label {
+            display: flex;
+            justify-content: space-between;
+            width: 80px;
+            font-size: 0.75rem;
+            color: #b8975a;
+            font-weight: bold;
+            margin-top: 0.4rem;
+        }
+
+        .relation-text {
+            font-size: 0.72rem;
+            color: #888;
+            text-align: center;
+            margin-top: 0.3rem;
+        }
+
+        .legend {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .notes {
+            max-width: 700px;
+            background: white;
+            border-left: 4px solid #b8975a;
+            padding: 1.5rem 2rem;
+            border-radius: 0 4px 4px 0;
+            margin-top: 3rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .notes h3 {
+            color: #1c1c1c;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .notes p {
+            color: #555;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            color: #aaa;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Diagrama Entidad-Relación</h1>
+    <p class="subtitle">SISTEMA DE GESTIÓN DE BIBLIOTECA — NUCBA 2026</p>
+
+    <div class="diagram">
+
+        <!-- USUARIOS -->
+        <div class="entity">
+            <div class="entity-header">Usuarios</div>
+            <div class="entity-fields">
+                <div class="field">
+                    <span class="field-name"><span class="badge pk">PK</span> id</span>
+                    <span class="field-type">INTEGER</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">nombre</span>
+                    <span class="field-type">VARCHAR(200)</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">apellido</span>
+                    <span class="field-type">VARCHAR(100)</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">direccion</span>
+                    <span class="field-type">VARCHAR(100)</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">telefono</span>
+                    <span class="field-type">VARCHAR(100)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONECTOR USUARIOS - PRESTAMOS -->
+        <div class="connector">
+            <div class="connector-line"></div>
+            <div class="connector-label">
+                <span>1</span>
+                <span>N</span>
+            </div>
+            <div class="relation-text">tiene</div>
+        </div>
+
+        <!-- PRESTAMOS -->
+        <div class="entity">
+            <div class="entity-header">Préstamos</div>
+            <div class="entity-fields">
+                <div class="field">
+                    <span class="field-name"><span class="badge pk">PK</span> id</span>
+                    <span class="field-type">INTEGER</span>
+                </div>
+                <div class="field">
+                    <span class="field-name"><span class="badge fk">FK</span> id_usuario</span>
+                    <span class="field-type">INTEGER</span>
+                </div>
+                <div class="field">
+                    <span class="field-name"><span class="badge fk">FK</span> id_libro</span>
+                    <span class="field-type">INTEGER</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">fecha_prestamo</span>
+                    <span class="field-type">DATETIME</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">fecha_vencimiento</span>
+                    <span class="field-type">DATETIME</span>
+                </div>
+                <div class="field">
+                    <span class="field-name"><span class="badge null">NULL</span> fecha_devolucion</span>
+                    <span class="field-type">DATETIME</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONECTOR PRESTAMOS - LIBROS -->
+        <div class="connector">
+            <div class="connector-line"></div>
+            <div class="connector-label">
+                <span>N</span>
+                <span>1</span>
+            </div>
+            <div class="relation-text">referencia</div>
+        </div>
+
+        <!-- LIBROS -->
+        <div class="entity">
+            <div class="entity-header">Libros</div>
+            <div class="entity-fields">
+                <div class="field">
+                    <span class="field-name"><span class="badge pk">PK</span> id</span>
+                    <span class="field-type">INTEGER</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">titulo</span>
+                    <span class="field-type">VARCHAR(200)</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">autor</span>
+                    <span class="field-type">VARCHAR(100)</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">editorial</span>
+                    <span class="field-type">VARCHAR(100)</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">anio_publicacion</span>
+                    <span class="field-type">INTEGER</span>
+                </div>
+                <div class="field">
+                    <span class="field-name">cantidad_ejemplares</span>
+                    <span class="field-type">INTEGER</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><span class="badge pk">PK</span> Clave Primaria</div>
+        <div class="legend-item"><span class="badge fk">FK</span> Clave Foránea</div>
+        <div class="legend-item"><span class="badge null">NULL</span> Nullable</div>
+    </div>
+
+    <div class="notes">
+        <h3>Notas de Diseño</h3>
+        <p><strong>Tabla Prestamos como pivote:</strong> actúa como tabla intermedia entre Usuarios y Libros, implementando una relación N:M descompuesta en dos relaciones 1:N.</p>
+        <p><strong>Estado del préstamo:</strong> se determina por <code>fecha_devolucion</code>. Si es NULL, el préstamo está activo. Si tiene valor, está cerrado. Esta decisión evita un campo booleano y agrega información temporal.</p>
+        <p><strong>Stock en tiempo real:</strong> <code>cantidad_ejemplares</code> se decrementa al prestar y se incrementa al devolver, manteniendo el stock actualizado automáticamente.</p>
+    </div>
+
+    <footer>Sistema de Gestión de Biblioteca — NUCBA 2026</footer>
+
+</body>
+</html>

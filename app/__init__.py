@@ -1,7 +1,5 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from app.extensions import db
 
 def create_app():
     app = Flask(__name__)
@@ -9,5 +7,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     db.init_app(app)
-    
+
+    from app.routes.libros import libros_bp
+    app.register_blueprint(libros_bp, url_prefix='/libros')
+
     return app

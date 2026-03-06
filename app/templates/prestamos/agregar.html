@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Préstamo</title>
+</head>
+<body>
+    <h1>Nuevo Préstamo</h1>
+    <form method="POST">
+        <label>Usuario</label>
+        <select name="id_usuario" required>
+            {% for usuario in usuarios %}
+            <option value="{{ usuario.id }}">{{ usuario.nombre }} {{ usuario.apellido }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label>Libro</label>
+        <select name="id_libro" required>
+            {% for libro in libros %}
+            <option value="{{ libro.id }}">{{ libro.titulo }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label>Fecha de vencimiento</label>
+        <input type="date" name="fecha_vencimiento" required><br>
+
+        <button type="submit">Registrar préstamo</button>
+    </form>
+    <a href="/prestamos/">Volver</a>
+</body>
+</html>

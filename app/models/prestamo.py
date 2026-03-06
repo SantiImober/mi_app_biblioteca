@@ -1,4 +1,5 @@
 from app.extensions import db
+
 class Prestamo(db.Model):
     __tablename__ = 'prestamos'
     
@@ -8,3 +9,5 @@ class Prestamo(db.Model):
     fecha_vencimiento = db.Column(db.DateTime, nullable=False)
     fecha_devolucion = db.Column(db.DateTime, nullable=True)
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    libro = db.relationship('Libro', backref='prestamos')
+    usuario = db.relationship('Usuario', backref='prestamos')

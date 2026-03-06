@@ -13,5 +13,7 @@ def create_app():
 
     from app.routes.usuarios import usuarios_bp
     app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
+    from app.routes.prestamos import prestamos_bp
+    app.register_blueprint(prestamos_bp, url_prefix='/prestamos')
 
     return app

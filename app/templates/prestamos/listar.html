@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Préstamos</title>
+</head>
+<body>
+    <h1>Préstamos vigentes</h1>
+    <a href="/prestamos/agregar">Nuevo préstamo</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Libro</th>
+                <th>Fecha préstamo</th>
+                <th>Fecha vencimiento</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prestamo in prestamos %}
+            <tr>
+                <td>{{ prestamo.usuario.nombre }} {{ prestamo.usuario.apellido }}</td>
+                <td>{{ prestamo.libro.titulo }}</td>
+                <td>{{ prestamo.fecha_prestamo.strftime('%d/%m/%Y') }}</td>
+                <td>{{ prestamo.fecha_vencimiento.strftime('%d/%m/%Y') }}</td>
+                <td>
+                    <form method="POST" action="/prestamos/devolver/{{ prestamo.id }}">
+                        <button type="submit">Devolver</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/libros/">Ir a Libros</a> |
+    <a href="/usuarios/">Ir a Usuarios</a>
+</body>
+</html>

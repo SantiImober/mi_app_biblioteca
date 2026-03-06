@@ -1,39 +1,39 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Usuarios</title>
-</head>
-<body>
-    <h1>Usuarios registrados</h1>
-    <a href="/usuarios/agregar">Agregar usuario</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for usuario in usuarios %}
-            <tr>
-                <td>{{ usuario.nombre }}</td>
-                <td>{{ usuario.apellido }}</td>
-                <td>{{ usuario.direccion }}</td>
-                <td>{{ usuario.telefono }}</td>
-                <td>
-                    <a href="/usuarios/editar/{{ usuario.id }}">Editar</a>
-                    <form method="POST" action="/usuarios/eliminar/{{ usuario.id }}">
-                        <button type="submit">Eliminar</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <a href="/libros/">Ir a Libros</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block content %}
+<h1>Usuarios registrados</h1>
+
+<div class="actions">
+    <a href="/usuarios/agregar" class="btn">+ Agregar usuario</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.apellido }}</td>
+            <td>{{ usuario.direccion }}</td>
+            <td>{{ usuario.telefono }}</td>
+            <td>
+                <a href="/usuarios/editar/{{ usuario.id }}" class="btn-secondary">Editar</a>
+                <form method="POST" action="/usuarios/eliminar/{{ usuario.id }}" class="inline">
+                    <button type="submit">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

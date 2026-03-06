@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3rem;">
+    <div style="background: white; border-radius: 4px; padding: 1.8rem 2rem; flex: 1; min-width: 200px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border-top: 3px solid #b8975a;">
+        <p style="font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: #888; margin-bottom: 0.5rem;">Total Libros</p>
+        <p style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #1c1c1c;">{{ total_libros }}</p>
+    </div>
+    <div style="background: white; border-radius: 4px; padding: 1.8rem 2rem; flex: 1; min-width: 200px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border-top: 3px solid #b8975a;">
+        <p style="font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: #888; margin-bottom: 0.5rem;">Total Usuarios</p>
+        <p style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #1c1c1c;">{{ total_usuarios }}</p>
+    </div>
+    <div style="background: white; border-radius: 4px; padding: 1.8rem 2rem; flex: 1; min-width: 200px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border-top: 3px solid #b8975a;">
+        <p style="font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: #888; margin-bottom: 0.5rem;">Préstamos Activos</p>
+        <p style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #1c1c1c;">{{ total_prestamos_activos }}</p>
+    </div>
+    <div style="background: white; border-radius: 4px; padding: 1.8rem 2rem; flex: 1; min-width: 200px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border-top: 3px solid #b8975a;">
+        <p style="font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: #888; margin-bottom: 0.5rem;">Ejemplares Disponibles</p>
+        <p style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #1c1c1c;">{{ total_ejemplares }}</p>
+    </div>
+    <div style="background: white; border-radius: 4px; padding: 1.8rem 2rem; flex: 1; min-width: 200px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border-top: 3px solid #8b2020;">
+        <p style="font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: #888; margin-bottom: 0.5rem;">Préstamos Vencidos</p>
+        <p style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #8b2020;">{{ prestamos_vencidos }}</p>
+    </div>
+</div>
+
+<h2 style="font-family: 'Playfair Display', serif; color: #1c1c1c; margin-bottom: 1.5rem; font-size: 1.5rem;">Últimos préstamos</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Libro</th>
+            <th>Fecha préstamo</th>
+            <th>Vencimiento</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prestamo in ultimos_prestamos %}
+        <tr>
+            <td>{{ prestamo.usuario.nombre }} {{ prestamo.usuario.apellido }}</td>
+            <td>{{ prestamo.libro.titulo }}</td>
+            <td>{{ prestamo.fecha_prestamo.strftime('%d/%m/%Y') }}</td>
+            <td>{{ prestamo.fecha_vencimiento.strftime('%d/%m/%Y') }}</td>
+            <td>
+                {% if prestamo.fecha_devolucion %}
+                    <span style="color: #2d6a2d; font-weight: 500;">✅ Devuelto</span>
+                {% elif prestamo.fecha_vencimiento < now %}
+                    <span style="color: #8b2020; font-weight: 500;">⚠️ Vencido</span>
+                {% else %}
+                    <span style="color: #b8975a; font-weight: 500;">📖 Activo</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

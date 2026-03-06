@@ -1,29 +1,42 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Agregar Libro</title>
-</head>
-<body>
-    <h1>Agregar Libro</h1>
+{% extends 'base.html' %}
+
+{% block title %}Agregar Libro{% endblock %}
+
+{% block content %}
+<h1>Agregar Libro</h1>
+
+<div class="form-card">
+    {% if error %}
+    <div class="flash-message flash-error">
+        ⚠️ {{ error }} — <a href="/libros/">Ir a la lista para editarlo</a>
+    </div>
+    {% endif %}
+
     <form method="POST">
-        <label>Título</label>
-        <input type="text" name="titulo" required><br>
-        
-        <label>Autor</label>
-        <input type="text" name="autor" required><br>
-        
-        <label>Editorial</label>
-        <input type="text" name="editorial" required><br>
-        
-        <label>Año de publicación</label>
-        <input type="number" name="anio_publicacion" required><br>
-        
-        <label>Cantidad de ejemplares</label>
-        <input type="number" name="cantidad_ejemplares" required><br>
-        
-        <button type="submit">Guardar</button>
+        <div class="form-group">
+            <label>Título</label>
+            <input type="text" name="titulo" required>
+        </div>
+        <div class="form-group">
+            <label>Autor</label>
+            <input type="text" name="autor" required>
+        </div>
+        <div class="form-group">
+            <label>Editorial</label>
+            <input type="text" name="editorial" required>
+        </div>
+        <div class="form-group">
+            <label>Año de publicación</label>
+            <input type="number" name="anio_publicacion" required>
+        </div>
+        <div class="form-group">
+            <label>Cantidad de ejemplares</label>
+            <input type="number" name="cantidad_ejemplares" required>
+        </div>
+        <div class="actions">
+            <button type="submit">Guardar</button>
+            <a href="/libros/" class="btn-secondary">Volver</a>
+        </div>
     </form>
-    <a href="/libros/">Volver</a>
-</body>
-</html>
+</div>
+{% endblock %}

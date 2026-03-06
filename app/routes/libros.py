@@ -12,6 +12,15 @@ def listar():
 @libros_bp.route('/agregar', methods=['GET', 'POST'])
 def agregar():
     if request.method == 'POST':
+        existe = Libro.query.filter_by(
+            titulo=request.form['titulo'],
+            autor=request.form['autor']
+        ).first()
+
+        if existe:
+            return render_template('libros/agregar.html',
+                                   error='Ya existe un libro con ese título y autor.')
+
         libro = Libro(
             titulo=request.form['titulo'],
             autor=request.form['autor'],
@@ -22,11 +31,15 @@ def agregar():
         db.session.add(libro)
         db.session.commit()
         return redirect(url_for('libros.listar'))
-    return render_template('libros/agregar.html')
+    return render_template('libros/agregar.html', error=None)
 
 @libros_bp.route('/eliminar/<int:id>', methods=['POST'])
 def eliminar(id):
     libro = Libro.query.get_or_404(id)
+    if libro.prestamos and any(p.fecha_devolucion is None for p in libro.prestamos):
+        libros = Libro.query.all()
+        return render_template('libros/listar.html', libros=libros,
+                               error='No podés eliminar un libro con préstamos activos.')
     db.session.delete(libro)
     db.session.commit()
     return redirect(url_for('libros.listar'))

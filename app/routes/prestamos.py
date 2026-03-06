@@ -14,26 +14,33 @@ def listar():
 
 @prestamos_bp.route('/agregar', methods=['GET', 'POST'])
 def agregar():
-    libros = Libro.query.all()
+    libros = Libro.query.filter(Libro.cantidad_ejemplares > 0).all()
     usuarios = Usuario.query.all()
     if request.method == 'POST':
+        libro = Libro.query.get_or_404(request.form['id_libro'])
+        
+        if libro.cantidad_ejemplares <= 0:
+            return render_template('prestamos/agregar.html',
+                                   libros=libros,
+                                   usuarios=usuarios,
+                                   error='No hay ejemplares disponibles de este libro.')
+        
         prestamo = Prestamo(
-            id_libro=request.form['id_libro'],
+            id_libro=libro.id,
             id_usuario=request.form['id_usuario'],
             fecha_prestamo=datetime.now(),
             fecha_vencimiento=datetime.strptime(request.form['fecha_vencimiento'], '%Y-%m-%d')
         )
+        libro.cantidad_ejemplares -= 1
         db.session.add(prestamo)
         db.session.commit()
         return redirect(url_for('prestamos.listar'))
-    return render_template('prestamos/agregar.html', libros=libros, usuarios=usuarios)
+    return render_template('prestamos/agregar.html', libros=libros, usuarios=usuarios, error=None)
 
 @prestamos_bp.route('/devolver/<int:id>', methods=['POST'])
 def devolver(id):
     prestamo = Prestamo.query.get_or_404(id)
     prestamo.fecha_devolucion = datetime.now()
+    prestamo.libro.cantidad_ejemplares += 1
     db.session.commit()
     return redirect(url_for('prestamos.listar'))
-
-libro = db.relationship('Libro', backref='prestamos')
-usuario = db.relationship('Usuario', backref='prestamos')

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Biblioteca{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 4rem 2rem; background: #1c1c1c; margin: -3rem -2rem 3rem -2rem; border-bottom: 2px solid #b8975a;">
+    <h1 style="font-family: 'Playfair Display', serif; color: #b8975a; font-size: 3rem; border: none; padding: 0; margin-bottom: 1rem;">
+        Sistema de Gestión de Biblioteca
+    </h1>
+    <p style="color: #d4c5a9; font-size: 1.1rem; margin-bottom: 2rem;">
+        Administrá libros, usuarios y préstamos desde un solo lugar
+    </p>
+    <a href="/libros/" class="btn">Ver libros disponibles</a>
+</div>
+
+<div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; padding: 2rem 0;">
+    <a href="/libros/" style="text-decoration: none; color: inherit;">
+        <div style="background: white; border-radius: 4px; padding: 2.5rem 2rem; width: 280px; text-align: center; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border-top: 3px solid #b8975a; transition: transform 0.3s;">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">📖</div>
+            <h2 style="font-family: 'Playfair Display', serif; color: #1c1c1c; margin-bottom: 0.5rem;">Libros</h2>
+            <p style="color: #888; font-size: 0.9rem;">Agregá, editá y gestioná el catálogo de libros disponibles</p>
+        </div>
+    </a>
+    <a href="/usuarios/" style="text-decoration: none; color: inherit;">
+        <div style="background: white; border-radius: 4px; padding: 2.5rem 2rem; width: 280px; text-align: center; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border-top: 3px solid #b8975a; transition: transform 0.3s;">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">👤</div>
+            <h2 style="font-family: 'Playfair Display', serif; color: #1c1c1c; margin-bottom: 0.5rem;">Usuarios</h2>
+            <p style="color: #888; font-size: 0.9rem;">Registrá y administrá los usuarios de la biblioteca</p>
+        </div>
+    </a>
+    <a href="/prestamos/" style="text-decoration: none; color: inherit;">
+        <div style="background: white; border-radius: 4px; padding: 2.5rem 2rem; width: 280px; text-align: center; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border-top: 3px solid #b8975a; transition: transform 0.3s;">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔄</div>
+            <h2 style="font-family: 'Playfair Display', serif; color: #1c1c1c; margin-bottom: 0.5rem;">Préstamos</h2>
+            <p style="color: #888; font-size: 0.9rem;">Controlá los préstamos vigentes y registrá devoluciones</p>
+        </div>
+    </a>
+</div>
+{% endblock %}

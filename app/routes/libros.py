@@ -9,6 +9,21 @@ def listar():
     libros = Libro.query.all()
     return render_template('libros/listar.html', libros=libros)
 
+@libros_bp.route('/buscar')
+def buscar():
+    q = request.args.get('q', '')
+    if q:
+        libros = Libro.query.filter(
+            db.or_(
+                Libro.titulo.ilike(f'%{q}%'),
+                Libro.autor.ilike(f'%{q}%'),
+                Libro.editorial.ilike(f'%{q}%')
+            )
+        ).all()
+    else:
+        libros = []
+    return render_template('libros/buscar.html', libros=libros, q=q)
+
 @libros_bp.route('/agregar', methods=['GET', 'POST'])
 def agregar():
     if request.method == 'POST':

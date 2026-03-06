@@ -10,6 +10,20 @@ def listar():
     usuarios = Usuario.query.all()
     return render_template('usuarios/listar.html', usuarios=usuarios)
 
+@usuarios_bp.route('/buscar')
+def buscar():
+    q = request.args.get('q', '')
+    if q:
+        usuarios = Usuario.query.filter(
+            db.or_(
+                Usuario.nombre.ilike(f'%{q}%'),
+                Usuario.apellido.ilike(f'%{q}%')
+            )
+        ).all()
+    else:
+        usuarios = []
+    return render_template('usuarios/buscar.html', usuarios=usuarios, q=q)
+
 @usuarios_bp.route('/agregar', methods=['GET', 'POST'])
 def agregar():
     if request.method == 'POST':

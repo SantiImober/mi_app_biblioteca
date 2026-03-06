@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Buscar Libros{% endblock %}
+
+{% block content %}
+<h1>Buscar Libros</h1>
+
+<div class="form-card" style="max-width: 100%; margin-bottom: 2rem;">
+    <form method="GET" action="/libros/buscar">
+        <div style="display: flex; gap: 1rem; align-items: flex-end;">
+            <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                <label>Buscar por título, autor o editorial</label>
+                <input type="text" name="q" value="{{ q }}" placeholder="Ej: García Márquez..." autofocus>
+            </div>
+            <button type="submit">Buscar</button>
+            <a href="/libros/" class="btn-secondary">Volver</a>
+        </div>
+    </form>
+</div>
+
+{% if q %}
+    {% if libros %}
+    <p style="color: #888; margin-bottom: 1rem; font-size: 0.9rem;">{{ libros|length }} resultado(s) para "{{ q }}"</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Editorial</th>
+                <th>Año</th>
+                <th>Ejemplares</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for libro in libros %}
+            <tr>
+                <td>{{ libro.titulo }}</td>
+                <td>{{ libro.autor }}</td>
+                <td>{{ libro.editorial }}</td>
+                <td>{{ libro.anio_publicacion }}</td>
+                <td>{{ libro.cantidad_ejemplares }}</td>
+                <td>
+                    <a href="/libros/editar/{{ libro.id }}" class="btn-secondary">Editar</a>
+                    <form method="POST" action="/libros/eliminar/{{ libro.id }}" class="inline">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: #888; font-size: 0.95rem;">No se encontraron libros para "{{ q }}".</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

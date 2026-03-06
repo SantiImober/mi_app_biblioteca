@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.extensions import db
 from app.models.prestamo import Prestamo
 from app.models.libro import Libro
@@ -18,13 +18,13 @@ def agregar():
     usuarios = Usuario.query.all()
     if request.method == 'POST':
         libro = Libro.query.get_or_404(request.form['id_libro'])
-        
+
         if libro.cantidad_ejemplares <= 0:
             return render_template('prestamos/agregar.html',
                                    libros=libros,
                                    usuarios=usuarios,
                                    error='No hay ejemplares disponibles de este libro.')
-        
+
         prestamo = Prestamo(
             id_libro=libro.id,
             id_usuario=request.form['id_usuario'],
@@ -34,6 +34,7 @@ def agregar():
         libro.cantidad_ejemplares -= 1
         db.session.add(prestamo)
         db.session.commit()
+        flash('Préstamo registrado correctamente.', 'success')
         return redirect(url_for('prestamos.listar'))
     return render_template('prestamos/agregar.html', libros=libros, usuarios=usuarios, error=None)
 
@@ -43,4 +44,5 @@ def devolver(id):
     prestamo.fecha_devolucion = datetime.now()
     prestamo.libro.cantidad_ejemplares += 1
     db.session.commit()
+    flash('Libro devuelto correctamente.', 'success')
     return redirect(url_for('prestamos.listar'))

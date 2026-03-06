@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.extensions import db
 from app.models.libro import Libro
 
@@ -30,6 +30,7 @@ def agregar():
         )
         db.session.add(libro)
         db.session.commit()
+        flash('Libro agregado correctamente.', 'success')
         return redirect(url_for('libros.listar'))
     return render_template('libros/agregar.html', error=None)
 
@@ -37,11 +38,11 @@ def agregar():
 def eliminar(id):
     libro = Libro.query.get_or_404(id)
     if libro.prestamos and any(p.fecha_devolucion is None for p in libro.prestamos):
-        libros = Libro.query.all()
-        return render_template('libros/listar.html', libros=libros,
-                               error='No podés eliminar un libro con préstamos activos.')
+        flash('No podés eliminar un libro con préstamos activos.', 'error')
+        return redirect(url_for('libros.listar'))
     db.session.delete(libro)
     db.session.commit()
+    flash('Libro eliminado correctamente.', 'success')
     return redirect(url_for('libros.listar'))
 
 @libros_bp.route('/editar/<int:id>', methods=['GET', 'POST'])
@@ -54,5 +55,6 @@ def editar(id):
         libro.anio_publicacion = request.form['anio_publicacion']
         libro.cantidad_ejemplares = request.form['cantidad_ejemplares']
         db.session.commit()
+        flash('Libro actualizado correctamente.', 'success')
         return redirect(url_for('libros.listar'))
     return render_template('libros/editar.html', libro=libro)

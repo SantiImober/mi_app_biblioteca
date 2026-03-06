@@ -1,9 +1,32 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from app.extensions import db
 from app.models.libro import Libro
+
 libros_bp = Blueprint('libros', __name__)
 
 @libros_bp.route('/')
 def listar():
     libros = Libro.query.all()
     return render_template('libros/listar.html', libros=libros)
+
+@libros_bp.route('/agregar', methods=['GET', 'POST'])
+def agregar():
+    if request.method == 'POST':
+        libro = Libro(
+            titulo=request.form['titulo'],
+            autor=request.form['autor'],
+            editorial=request.form['editorial'],
+            anio_publicacion=request.form['anio_publicacion'],
+            cantidad_ejemplares=request.form['cantidad_ejemplares']
+        )
+        db.session.add(libro)
+        db.session.commit()
+        return redirect(url_for('libros.listar'))
+    return render_template('libros/agregar.html')
+
+@libros_bp.route('/eliminar/<int:id>', methods=['POST'])
+def eliminar(id):
+    libro = Libro.query.get_or_404(id)
+    db.session.delete(libro)
+    db.session.commit()
+    return redirect(url_for('libros.listar'))

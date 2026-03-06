@@ -28,7 +28,9 @@
                 <td>{{ libro.cantidad_ejemplares }}</td>
                 <td>
                     <a href="/libros/editar/{{ libro.id }}">Editar</a>
-                    <a href="/libros/eliminar/{{ libro.id }}">Eliminar</a>
+                    <form method="POST" action="/libros/eliminar/{{ libro.id }}">
+                        <button type="submit">Eliminar</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}

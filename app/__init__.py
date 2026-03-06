@@ -11,4 +11,7 @@ def create_app():
     from app.routes.libros import libros_bp
     app.register_blueprint(libros_bp, url_prefix='/libros')
 
+    from app.routes.usuarios import usuarios_bp
+    app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
+
     return app

@@ -58,6 +58,8 @@ def eliminar(id):
     if any(p.fecha_devolucion is None for p in usuario.prestamos):
         flash('No podés eliminar un usuario con préstamos activos.', 'error')
         return redirect(url_for('usuarios.listar'))
+    for prestamo in usuario.prestamos:
+        db.session.delete(prestamo)
     db.session.delete(usuario)
     db.session.commit()
     flash('Usuario eliminado correctamente.', 'success')

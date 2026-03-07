@@ -55,6 +55,8 @@ def eliminar(id):
     if libro.prestamos and any(p.fecha_devolucion is None for p in libro.prestamos):
         flash('No podés eliminar un libro con préstamos activos.', 'error')
         return redirect(url_for('libros.listar'))
+    for prestamo in libro.prestamos:
+        db.session.delete(prestamo)
     db.session.delete(libro)
     db.session.commit()
     flash('Libro eliminado correctamente.', 'success')

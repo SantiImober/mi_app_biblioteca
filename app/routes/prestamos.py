@@ -17,7 +17,12 @@ def agregar():
     libros = Libro.query.filter(Libro.cantidad_ejemplares > 0).all()
     usuarios = Usuario.query.all()
     if request.method == 'POST':
+        print(f"Fecha vencimiento: {request.form['fecha_vencimiento']}")
+        print(f"Libro id: {request.form['id_libro']}")
+        print(f"Usuario id: {request.form['id_usuario']}")
+
         libro = Libro.query.get_or_404(request.form['id_libro'])
+        fecha_vencimiento = datetime.strptime(request.form['fecha_vencimiento'], '%Y-%m-%d')
 
         if libro.cantidad_ejemplares <= 0:
             return render_template('prestamos/agregar.html',
@@ -25,11 +30,17 @@ def agregar():
                                    usuarios=usuarios,
                                    error='No hay ejemplares disponibles de este libro.')
 
+        if fecha_vencimiento.date() <= datetime.now().date():
+            return render_template('prestamos/agregar.html',
+                                   libros=libros,
+                                   usuarios=usuarios,
+                                   error='La fecha de vencimiento debe ser posterior a hoy.')
+
         prestamo = Prestamo(
             id_libro=libro.id,
             id_usuario=request.form['id_usuario'],
             fecha_prestamo=datetime.now(),
-            fecha_vencimiento=datetime.strptime(request.form['fecha_vencimiento'], '%Y-%m-%d')
+            fecha_vencimiento=fecha_vencimiento
         )
         libro.cantidad_ejemplares -= 1
         db.session.add(prestamo)

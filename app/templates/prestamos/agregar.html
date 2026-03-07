@@ -6,6 +6,12 @@
 <h1>Nuevo Préstamo</h1>
 
 <div class="form-card">
+    {% if error %}
+    <div class="flash-message flash-error">
+        ⚠️ {{ error }}
+    </div>
+    {% endif %}
+
     <form method="POST">
         <div class="form-group">
             <label>Usuario</label>
